@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'cars/css/style.css' %}">
+        <title>Cars</title>
+    </head>
+    <body id="main_body">
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+                <a class="navbar-brand" href="/">Login</a>
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/main">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/my_fav">Favorites</a>
+                    </li>
+                </ul>
+                {% if request.session.id == 1 %}
+                    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/new_car">Add new</a>
+                        </li>
+                    </ul>
+                {% endif %}
+
+                <div class="form-inline my-2 my-lg-0">
+                    <a class="btn btn-outline-success my-2 my-sm-0" href="/logout">Logout</a>
+                </div>
+            </div>
+        </nav>
+
+        <h1 id="head2">Find Your Car</h1>
+        <div id="left">
+            <h3 class='filter'>Filter results:</h3>
+            <form method="post" id='myForm' action='/display_cars' >
+            {% csrf_token %}
+
+                <select name="make" value="Any make" class="btn btn-secondary dropdown-toggle">
+                    <option value="AnyMake">Any Make</option>
+                    <option value="BMW">BMW</option>
+                    <option value="Tesla">Tesla</option> 
+                    <option value="Mazda">Mazda</option> 
+                    <option value="Toyota">Toyota</option> 
+                </select><br>
+                
+                <select name="model" value="Any Model" class="btn btn-secondary dropdown-toggle">
+                    <option class="dropdown-item" href="#" value='AnyModel'>Any model</option>
+                    <option class="dropdown-item" href="#" value='5 series'>5 Series</option>
+                    <option class="dropdown-item" href="#" value='7 series'>7 Series</option>
+                    <option class="dropdown-item" href="#" value='Model S'>Model S</option>
+                    <option class="dropdown-item" href="#" value='CX-5'>CX-5</option>
+                    <option class="dropdown-item" href="#" value='Corolla Hatchback'>Corolla Hatchback</option>
+                </select> <br>
+               
+                <select name="year" class="btn btn-secondary dropdown-toggle">
+                    <option class="dropdown-item" href="#" value='AnyYear'>Any Year</option>
+                    <option class="dropdown-item" href="#" value='2018'>2018</option>
+                    <option class="dropdown-item" href="#" value='2019'>2019</option>
+                </select> <br>
+                
+                <button id="imgBut" class="btn btn-info">Search</button>
+            </form>
+        </div>
+
+        <div class="placeholder"> </div>
+
+    <script>
+    $('#imgBut').click(function() {
+        console.log('serialized info', $('#myForm').serialize());
+        console.log('preparing to send an Ajax request with the starts_with value of', $('#starts_with').val());
+        $.ajax({
+           method: "POST",
+           url: $('#myForm').attr('action'),
+           data: $('#myForm').serialize(),
+           success: function( response ) {
+                console.log('received response:', response)
+                $('.placeholder').html(response);
+           }
+        });
+        return false;
+    });
+    </script>
+  </body>
+</html>

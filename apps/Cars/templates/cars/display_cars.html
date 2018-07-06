@@ -1,0 +1,42 @@
+{% for i in all_cars %}
+    <a href="/show/{{i.id}}" class="video">
+        <div class='pic_info'>
+            <img class="small_img" src = "/static/cars/img/{{i.pic}}">
+            <div class="info">
+                <h3>{{i.make}} {{i.model}} {{i.year}}</h3>
+                <p>Price from <span class='info_price'>${{i.price}}</span></p>
+            </div> 
+            <div class="main_fav_but"> 
+                <form method="post" class='in_form' action='/favorites/{{i.id}}' >
+                    {% csrf_token %}
+                    <input type="submit" value="Add to favorites" class="btn btn-primary favor fav_but"/>
+                </form>
+            </div>
+            {% if request.session.id == 1 %}
+                <a href="/destroy_car/{{i.id}}" class="btn btn-danger" role="button">Delete from DB</a>
+                <a href="/edit_car/{{i.id}}" class="btn btn-warning" role="button">Edit</a>
+            {% endif %}
+        </div>
+    </a>
+{% endfor %}
+
+<div id="placeholder2"></div>
+
+<script>
+    $(".in_form").submit(function(e){
+        e.preventDefault()
+        $.ajax({
+            url: $(this).attr('action'),
+            method: "POST",
+            data: $('.in_form').serialize(),
+            success: function(serverResponse) {
+                console.log('success', serverResponse)
+                $('#placeholder2').html(serverResponse);
+            }
+        })
+    })
+
+    $(".fav_but").click(function(){
+        $('.fav_but').hide();
+    });
+</script>

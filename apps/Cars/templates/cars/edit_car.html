@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'cars/css/style.css' %}">
+        <title>Cars</title>
+    </head>
+    <body id="edit_car_body">
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+                <a class="navbar-brand" href="/">Login</a>
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/main">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/my_fav">Favorites</a>
+                    </li>
+                </ul>
+                {% if request.session.id == 1 %}
+                    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/new_car">Add new</a>
+                        </li>
+                    </ul>
+                {% endif %}
+
+                <div class="form-inline my-2 my-lg-0">
+                    <a class="btn btn-outline-success my-2 my-sm-0" href="/logout">Logout</a>
+                </div>
+            </div>
+        </nav>
+
+        <div id="edit_car">
+            <h1 id='edit_header'>Edit car information</h1>
+            
+            <form  action="/update_car/{{car.id}}" method="POST" id='edit_car_form'>
+            {% csrf_token %}
+                <input type="hidden" name="type" value="edit_car_form">
+                <div>
+                    <label for="make_car">Make:</label>
+                    <input type="text" id="make_car" name="make_car" value="{{car.make}}" class="form-control">
+                    {% if messages %}
+                    <p>
+                        {% for message in messages %}
+                        {%if 'make' in message.tags %}
+                            <span style="color: red">{{ message }} </span>
+                        {% endif %}
+                        {% endfor %}
+                    </p>
+                    {% endif %}
+                </div>
+                <div>
+                    <label for="model">Model:</label>
+                    <input type="text" id="model" name="model" class="form-control" value="{{car.model}}">
+                    {% if messages %}
+                    <p>
+                        {% for message in messages %}
+                        {%if 'model' in message.tags %}
+                            <span style="color: red">{{ message }} </span>
+                        {% endif %}
+                        {% endfor %}
+                    </p>
+                    {% endif %}
+                </div>
+                <div>
+                    <label for="year">Year</label>
+                    <input name="year" type="text" class="form-control" id="year" value="{{car.year}}">
+                    {% if messages %}
+                    <p>
+                        {% for message in messages %}
+                        {%if 'year' in message.tags %}
+                            <span style="color: red">{{ message }} </span>
+                        {% endif %}
+                        {% endfor %}
+                    </p>
+                    {% endif %}
+                </div>
+                <div>
+                    <label for="price">Price:</label>
+                    <input type="text" id="price" name="price" class="form-control" value="{{car.price}}">
+                    {% if messages %}
+                    <p>
+                        {% for message in messages %}
+                        {%if 'price' in message.tags %}
+                            <span style="color: red">{{ message }} </span>
+                        {% endif %}
+                        {% endfor %}
+                    </p>
+                    {% endif %}
+                </div><br>
+                <div>
+                    <label for="pic">Picture name:</label>
+                    <input type="text" id="pic" name="pic" class="form-control" value="{{car.pic}}">
+                    {% if messages %}
+                    <p>
+                        {% for message in messages %}
+                        {%if 'pic' in message.tags %}
+                            <span style="color: red">{{ message }} </span>
+                        {% endif %}
+                        {% endfor %}
+                    </p>
+                    {% endif %}
+                </div><br>
+                <div>
+                    <label for="car_desc">Description:</label>
+                    <textarea rows="10" cols="50" id="car_desc" name="car_desc" class="form-control" value="{{car.desc}}">{{car.desc}}</textarea>
+                    {% if messages %}
+                    <p>
+                        {% for message in messages %}
+                        {%if 'desc' in message.tags %}
+                            <span style="color: red">{{ message }} </span>
+                        {% endif %}
+                        {% endfor %}
+                    </p>
+                    {% endif %}
+                </div><br>
+                <div>
+                    <label for="video">Video:</label>
+                    <input type="text" id="video" name="video" class="form-control" value="{{car.video}}">
+                    {% if messages %}
+                    <p>
+                        {% for message in messages %}
+                        {%if 'video' in message.tags %}
+                            <span style="color: red">{{ message }} </span>
+                        {% endif %}
+                        {% endfor %}
+                    </p>
+                    {% endif %}
+                </div><br>
+
+                <div class="button">
+                    <button type="submit" class="btn btn-primary">Edit car</button>
+                </div> 
+            </form>
+        </div>
+
+  </body>
+</html>
