@@ -3,8 +3,6 @@ from django.db import models
 import bcrypt
 import re
 
-
-
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9\.\+_-]+@[a-zA-Z0-9\._-]+\.[a-zA-Z]*$')
 NAME_REGEX = re.compile(r'^[a-zA-Z]+$')
 
@@ -58,7 +56,7 @@ class Car(models.Model):
     pic = models.CharField(max_length=45)
     desc = models.TextField()
     video = models.CharField(max_length=255)
-    author = models.ForeignKey(User, related_name="cars")
+    author = models.ForeignKey(User, related_name="cars", on_delete=models.CASCADE)
     liked_by = models.ManyToManyField(User, related_name="liked_cars")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
