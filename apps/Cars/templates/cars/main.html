@@ -54,14 +54,22 @@
                     <option value="Mazda">Mazda</option> 
                     <option value="Toyota">Toyota</option> 
                 </select><br>
-                
                 <select name="model" value="Any Model" class="btn btn-secondary dropdown-toggle">
-                    <option class="dropdown-item" href="#" value='AnyModel'>Any model</option>
+
+                   
+                    {% if make.value == "BMW" %}
                     <option class="dropdown-item" href="#" value='5 series'>5 Series</option>
                     <option class="dropdown-item" href="#" value='7 series'>7 Series</option>
+                    {% elif c.make == "Tesla"%}
                     <option class="dropdown-item" href="#" value='Model S'>Model S</option>
+                    {% elif c.make == "Mazda"%}
                     <option class="dropdown-item" href="#" value='CX-5'>CX-5</option>
+                    {% elif c.make == "Toyota"%}
                     <option class="dropdown-item" href="#" value='Corolla Hatchback'>Corolla Hatchback</option>
+                    {% else %}
+                    <option class="dropdown-item" href="#" value='AnyModel'>Any model</option>
+                    {% endif %}
+                   
                 </select> <br>
                
                 <select name="year" class="btn btn-secondary dropdown-toggle">
